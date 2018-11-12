@@ -16,6 +16,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Public/UserWidget/MainUserWidget.h"
+#include "Engine/DataTable.h"
+#include "Public/Character/PlayerInfo.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -35,6 +37,7 @@ ABaseCharacter::ABaseCharacter()
 	bUseControllerRotationYaw = false;
 	CameraBoom->bUsePawnControlRotation = true;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+	ReadData();
 }
 
 // Called when the game starts or when spawned
@@ -149,5 +152,24 @@ void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAction("LeftMouseButton", IE_Pressed, this, &ABaseCharacter::OnDestinationPressed);
+}
+
+void ABaseCharacter::ReadData()
+{
+	UDataTable* PlayerInfo = Cast<UDataTable>(StaticLoadObject(UDataTable::StaticClass(), NULL, TEXT("DataTable'/Game/Blueprints/Info/PkayerInfo.PkayerInfo'")));
+	if (PlayerInfo == NULL)
+	{
+		UE_LOG(LogTemp, Error, TEXT("PlayerInfo Load Failure"));
+	}
+	FPlayerInfo* RowData = PlayerInfo->FindRow<FPlayerInfo>(TEXT("1"), NULL, false);
+	if (PlayerInfo != NULL)
+	{
+		SetCurrentPlayerName(RowData->CharacterName);
+		SetCurrentHp(RowData->StartHp);
+		SetCurrentMp(RowData->StartMp);
+		TotalHp = RowData->StartHp;
+		TotalMp = RowData->StartMp;
+		CurrentLevel = 1;
+	}
 }
 

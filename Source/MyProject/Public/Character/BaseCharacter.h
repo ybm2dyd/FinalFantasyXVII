@@ -74,4 +74,38 @@ protected:
 	/** 鏡頭縮放角度 */
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float CameraZoomAngle = 25.0f;
+
+protected:
+	/** 角色名字 */
+	FString PlayerName;
+	/** 当前血量 */
+	UPROPERTY(VisibleAnywhere, Category = "PlayerInfo")
+	float CurrentHp;
+	/** 上限血量 */
+	UPROPERTY(VisibleAnywhere, Category = "PlayerInfo")
+	float TotalHp;
+	/** 当前蓝量 */
+	UPROPERTY(VisibleAnywhere, Category = "PlayerInfo")
+	float CurrentMp;
+	/** 上限蓝量 */
+	UPROPERTY(VisibleAnywhere, Category = "PlayerInfo")
+	float TotalMp;
+	/** 当前经验 */
+	UPROPERTY(VisibleAnywhere, Category = "PlayerInfo")
+	uint32 CurrentExp;
+	/** 当前等级 */
+	UPROPERTY(VisibleAnywhere, Category = "PlayerInfo")
+	uint32 CurrentLevel;
+
+	void ReadData();
+
+public:
+	FORCEINLINE void SetCurrentHp(float TheHp) { CurrentHp = TheHp; }
+	FORCEINLINE float GetCurrentHp() { return CurrentHp; }
+	FORCEINLINE void SetCurrentMp(float TheMp) { CurrentMp = TheMp; }
+	FORCEINLINE float GetCurrentMp() { return CurrentMp; }
+	FORCEINLINE void SetCurrentExp(float TheExp) { CurrentHp = TheExp; }
+	FORCEINLINE float GetCurrentExp() { return CurrentExp; }
+	FORCEINLINE void SetCurrentPlayerName(FString ThePlayerName) { PlayerName = ThePlayerName; }
+	FORCEINLINE FString GetCurrentPlayerName() { return PlayerName; }
 };
